@@ -1,6 +1,8 @@
+import { CART_URL, PRODUCT_NAMES } from '../constants/constant';
 import { expect, test } from '../fixtures/login.fixture';
-import { standardUser } from '../test-data/loginData';
 
+// Alternate way to handle login step
+// Here login is handled by global set up -- project dependencies
 // test.beforeEach("Login using valid data", async ({ loginPage }) => {
 //     // Arrange
 //     await loginPage.openLoginPage();
@@ -8,45 +10,135 @@ import { standardUser } from '../test-data/loginData';
 // });
 
 test.describe('Product Page tests', () => {
-    test('Add product to cart', { tag: ["@Smoke", "@ProductsPage"] }, async ({ page, productsPage, headerOptions }) => {
-        // Act 
-        const productName = "Sauce Labs Backpack";
-        await productsPage.addProductToCart(productName);
-        const totalItemsCount = await headerOptions.getNumberOfCartItems();
-        console.log(totalItemsCount);
+    test(
+        "TC_001_Add product to cart",
+        { tag: ["@Smoke", "@ProductsPage"] },
+        async ({ page, productsPage, headerOptions }) => {
+            // Act
+            const productName = PRODUCT_NAMES[0];
+            await productsPage.addProductToCart(productName);
 
-        // Assert
-        expect(totalItemsCount).toEqual(1);
-        await page.close();
-    });
+            const totalItemsCount = await headerOptions.getNumberOfCartItems();
+            // Assert
+            expect(totalItemsCount).toEqual(1);
+            await page.close();
+        });
 
-    test("Verify the cart product name ", { tag: ["@Regression", "@ProductsPage"] }, async ({ productsPage, headerOptions, cartPage, page }) => {
-        // Act
-        const productName = "Sauce Labs Backpack";
-        await productsPage.addProductToCart(productName);
-        await headerOptions.shoppingCartLink.click();
-        // Assert
-        const cartPageUrl = page.url();
-        expect(cartPageUrl).toEqual("https://www.saucedemo.com/cart.html");
-        const actualCartProductName = await cartPage.getProductName(productName);
-        expect(productName).toEqual(actualCartProductName);
-        await page.close();
-    });
+    test(
+        "TC_002_Add all products to cart and check count",
+        { tag: ["@Regression", "@ProductsPage"] },
+        async ({ page, productsPage, headerOptions }) => {
+            // Act
+            for (const ProductName of PRODUCT_NAMES) {
+                await productsPage.addProductToCart(ProductName);
+            }
+            const totalItemsCount = await headerOptions.getNumberOfCartItems();
+            // Assert
+            expect(totalItemsCount).toEqual(PRODUCT_NAMES.length);
+            await page.close();
+        });
 
-    test("Verify the product price in cart", async ({ headerOptions, productsPage, cartPage, page }) => {
-        const productName = "Sauce Labs Backpack";
-        const productPriceBeforeAddToCart = await productsPage.getProductPriceByName(productName);
+    test(
+        "TC_003_Remove product from cart",
+        { tag: ["@Regression", "@ProductsPage"] },
+        async ({ page, productsPage, headerOptions }) => {
+            const productName = PRODUCT_NAMES[1];
+            await productsPage.addProductToCart(productName);
+            const totalItemsCountAfterAdd = await headerOptions.getNumberOfCartItems();
+            expect(totalItemsCountAfterAdd).toEqual(1);
 
-        await productsPage.addProductToCart(productName);
-        await headerOptions.shoppingCartLink.click();
+            await productsPage.removeProductFromCart(productName);
+            await page.close();
+        });
 
-        // Assert
+    test(
+        "TC_004_Verify the cart product name ",
+        { tag: ["@Regression", "@ProductsPage"] },
+        async ({ productsPage, headerOptions, cartPage, page }) => {
+            // Act
+            const productName = PRODUCT_NAMES[2];
+            await productsPage.addProductToCart(productName);
+            await headerOptions.shoppingCartLink.click();
+            // Assert
+            const cartPageUrl = page.url();
+            expect(cartPageUrl).toEqual(CART_URL);
+            const actualCartProductName = await cartPage.getProductName(productName);
+            expect(productName).toEqual(actualCartProductName);
+            await page.close();
+        });
 
-        const cartPageUrl = page.url();
-        expect(cartPageUrl).toEqual("https://www.saucedemo.com/cart.html");
+    test(
+        "TC_005_Verify the product price in cart",
+        { tag: ["@Regression", "@ProductsPage"] },
+        async ({ headerOptions, productsPage, cartPage, page }) => {
+            const productName = PRODUCT_NAMES[3];
+            const productPriceBeforeAddToCart = await productsPage.getProductPriceByName(productName);
 
-        const productPriceAfterAddToCart = await cartPage.getProductPrice(productName);
-        expect(productPriceBeforeAddToCart).toEqual(productPriceAfterAddToCart);
-        await page.close();
-    });
+            await productsPage.addProductToCart(productName);
+            await headerOptions.shoppingCartLink.click();
+
+            // Assert
+
+            const cartPageUrl = page.url();
+            expect(cartPageUrl).toEqual(CART_URL);
+
+            const productPriceAfterAddToCart = await cartPage.getProductPrice(productName);
+            expect(productPriceBeforeAddToCart).toEqual(productPriceAfterAddToCart);
+            await page.close();
+        });
+
+    test(
+        "TC_006_Check products count on cart page",
+        { tag: ["@ProductsPage", "@Regression"] },
+        async ({ headerOptions, productsPage, cartPage }) => {
+            // Arrange
+            for (const products of PRODUCT_NAMES) {
+                await productsPage.addProductToCart(products);
+            }
+            // Act
+            await headerOptions.goToCartPage();
+            const ActualCount = await cartPage.getNumberOfCartItems();
+            // Assert
+            expect(ActualCount).toEqual(PRODUCT_NAMES.length);
+        });
+
+    test(
+        "TC_007_Navigate to products page from cart page",
+        { tag: ["@ProductsPage", "@Regression"] },
+        async ({ page, headerOptions, cartPage, productsPage }) => {
+            // Arrange
+            const productName = PRODUCT_NAMES[4];
+            await productsPage.addProductToCart(productName);
+            // Act
+            await headerOptions.goToCartPage();
+            expect(await cartPage.yourCartText.isVisible());
+            await cartPage.goToProductsPageFromCart();
+            // Assert
+            await expect(productsPage.productsHeading).toBeVisible();
+            await page.close();
+        });
+
+    test(
+        "TC_008_Check removing product from cart page",
+        { tag: ["@Regression", "@ProductPage"] },
+        async ({ page, productsPage, headerOptions, cartPage }) => {
+            const prouctName = PRODUCT_NAMES[4];
+            // Arrange - add product to cart
+            await productsPage.addProductToCart(prouctName);
+            await headerOptions.goToCartPage();
+            // Assert - check the actual product name on cart page
+            const actualCartProductName = await cartPage.getProductName(prouctName);
+            expect(actualCartProductName).toBe(prouctName);
+            // Arrange - remove the product from cart
+            const count_beforeRemove = await cartPage.getNumberOfCartItems();
+            expect(count_beforeRemove).toBe(1);
+
+            await cartPage.removeProductFromCart(prouctName);
+
+            const count_afterRemove = await cartPage.getNumberOfCartItems();
+            expect(count_afterRemove).toBe(0);
+
+            await page.close()
+        });
+
 });

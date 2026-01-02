@@ -14,8 +14,8 @@ export class header {
         this.page = page;
         this.hamburgerMenu = page.getByRole('button', {name: 'Open Menu'});
         this.swagLabsText = page.getByText('Swag Labs');
-        this.shoppingCartLink = page.locator('div.shopping_cart_container');
-        this.shoppingCartBadge = page.locator("span[class='shopping_cart_badge']");
+        this.shoppingCartLink = page.getByTestId("shopping-cart-link");
+        this.shoppingCartBadge = page.getByTestId("shopping-cart-badge");
         this.logoutLink = page.getByRole('link', {name: 'Logout'});
         this.closeHamburgerMenu = page.getByRole('button', {name : 'Close Menu'});
     }
@@ -26,12 +26,16 @@ export class header {
 
     async getNumberOfCartItems() : Promise<number>{
         const totalCartItems =  await this.shoppingCartBadge.textContent();
-
-        return parseInt(totalCartItems!);
+        
+        return parseInt(totalCartItems!);   
     }
 
     async closeHamburger() : Promise<void>{
         await this.closeHamburgerMenu.click();
+    }
+
+    async goToCartPage(): Promise<void>{
+        await this.shoppingCartLink.click();
     }
 
 }

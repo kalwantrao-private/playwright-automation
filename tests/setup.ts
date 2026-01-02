@@ -11,6 +11,6 @@ setup("Login setup", async ({page})=>{
     await passwordTextbox.fill('secret_sauce');
     await loginButton.click();
 
-    await page.context().storageState({path: STORAGE_PATH })
+    await page.context().storageState({path: STORAGE_PATH });
 
 })

@@ -9,6 +9,8 @@
   },
   "scripts": {},
   "dependencies": {
-    "allure-playwright": "^3.4.3"
+    "allure-playwright": "^3.4.3",
+    "eslint": "^9.39.2",
+    "winston": "^3.19.0"
   }
 }
