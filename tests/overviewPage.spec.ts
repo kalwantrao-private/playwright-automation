@@ -62,5 +62,26 @@ test.describe("Overview Page", () => {
             await page.close();
         });
 
+        test("Verify the final checkout amount calculations", { tag: [ "@Regression", "@OverviewPage" ]},
+            async({ page, productsPage, headerOptions, cartPage, checkoutPage, overviewPage }) => {
+                const productName = PRODUCT_NAMES[0];
+                await productsPage.addProductToCart(productName);
+                await headerOptions.goToCartPage();
+                await cartPage.goToCheckoutPage();
+                await checkoutPage.fillUserInfo(FIRSTNAME, LASTNAME, POSTALCODES);
+                await checkoutPage.clickContinueButton();
+                const itemTotal = await overviewPage.getItemTotal();
+
+                const tax = await overviewPage.getTax();
+                const actualTax = tax/100;
+
+                const finalTotal = await overviewPage.getFinalTotal();
+                const actualFinalPrice = finalTotal/100;
+
+                expect(itemTotal+actualTax).toBe(actualFinalPrice);
+
+                await page.close();
+        })
+
 })
 

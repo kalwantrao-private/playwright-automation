@@ -1,6 +1,6 @@
 import { Locator, Page } from "@playwright/test";
 
-export class products {
+export class Products {
     readonly page: Page;
     readonly productsHeading: Locator;
     readonly productContainer: Locator;
@@ -41,7 +41,7 @@ export class products {
         if (Number.isNaN(priceText)) {
             throw new Error(`Invalid price format: "${priceText}"`)
         }
-        
+
         return priceText;
     }
 

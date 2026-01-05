@@ -16,7 +16,7 @@ test.describe("Go to Product details from cart", () => {
             await page.close();
         });
 
-    test("Remove product from cart from product details", { tag: ["@Regression", "@ProductDetailsPage"] },
+    test("Remove product from cart product details page", { tag: ["@Regression", "@ProductDetailsPage"] },
         async ({ page, productsPage, cartPage, headerOptions, productDetailsPage }) => {
             const productName = PRODUCT_NAMES[1];
             await productsPage.addProductToCart(productName);

@@ -1,7 +1,7 @@
 import { Locator, Page } from "@playwright/test";
 
 
-export class header {
+export class Header {
     readonly page: Page;
     readonly hamburgerMenu: Locator;
     readonly swagLabsText: Locator;
@@ -26,8 +26,8 @@ export class header {
 
     async getNumberOfCartItems() : Promise<number>{
         const totalCartItems =  await this.shoppingCartBadge.textContent();
-        
-        return parseInt(totalCartItems!);   
+
+        return parseInt(totalCartItems!);
     }
 
     async closeHamburger() : Promise<void>{

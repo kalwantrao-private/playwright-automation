@@ -1,22 +1,22 @@
 import { LoginPage } from "../pages/login.page";
 import { test as baseTest } from '@playwright/test';
-import { header } from "../pages/headerSection.page";
-import { products } from "../pages/products.page";
-import { cartPage } from "../pages/cart.page";
-import { checkout } from "../pages/checkout.page";
-import { overview } from "../pages/overview.page";
-import { completePage } from "../pages/complete.page";
-import { productDetails } from "../pages/productDetail.page";
+import { Header } from "../pages/headerSection.page";
+import { Products } from "../pages/products.page";
+import { CartPage } from "../pages/cart.page";
+import { Checkout } from "../pages/checkout.page";
+import { Overview } from "../pages/overview.page";
+import { CompletePage } from "../pages/checkoutComplete.page";
+import { ProductDetails } from "../pages/productDetail.page";
 
 type MyFixtures = {
     loginPage: LoginPage;
-    headerOptions: header;
-    productsPage: products;
-    cartPage: cartPage;
-    checkoutPage: checkout;
-    overviewPage: overview;
-    orderCompletePage: completePage;
-    productDetailsPage: productDetails;
+    headerOptions: Header;
+    productsPage: Products;
+    cartPage: CartPage;
+    checkoutPage: Checkout;
+    overviewPage: Overview;
+    orderCompletePage: CompletePage;
+    productDetailsPage: ProductDetails;
 }
 
 export const test = baseTest.extend<MyFixtures>({
@@ -26,36 +26,36 @@ export const test = baseTest.extend<MyFixtures>({
     },
 
     headerOptions: async ({ page }, use) => {
-        const object = new header(page);
+        const object = new Header(page);
         await use(object);
     },
 
     productsPage: async ({ page }, use) => {
-        const object = new products(page);
+        const object = new Products(page);
         await object.goTo();
         await use(object);
     },
 
     cartPage: async ({ page }, use) => {
-        const object = new cartPage(page);
+        const object = new CartPage(page);
         // await object.goTo();
         await use(object);
     },
 
     checkoutPage: async ({ page }, use) => {
-        const object = new checkout(page);
+        const object = new Checkout(page);
         await use(object);
     },
     overviewPage: async ({ page }, use) => {
-        const object = new overview(page);
+        const object = new Overview(page);
         use(object);
     },
     orderCompletePage: async ({ page }, use) => {
-        const object = new completePage(page);
+        const object = new CompletePage(page);
         use(object);
     },
     productDetailsPage: async ({ page}, use) => {
-        const object = new productDetails(page);
+        const object = new ProductDetails(page);
         use(object);
     }
 });
