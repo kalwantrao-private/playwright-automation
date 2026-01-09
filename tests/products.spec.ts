@@ -20,7 +20,7 @@ test.describe('Product Page tests', () => {
 
             const totalItemsCount = await headerOptions.getNumberOfCartItems();
             // Assert
-            expect(totalItemsCount).toEqual(1);
+            expect.soft(totalItemsCount).toEqual(1);
             await page.close();
         });
 
@@ -34,7 +34,7 @@ test.describe('Product Page tests', () => {
             }
             const totalItemsCount = await headerOptions.getNumberOfCartItems();
             // Assert
-            expect(totalItemsCount).toEqual(PRODUCT_NAMES.length);
+            expect.soft(totalItemsCount).toEqual(PRODUCT_NAMES.length);
             await page.close();
         });
 
@@ -45,7 +45,7 @@ test.describe('Product Page tests', () => {
             const productName = PRODUCT_NAMES[1];
             await productsPage.addProductToCart(productName);
             const totalItemsCountAfterAdd = await headerOptions.getNumberOfCartItems();
-            expect(totalItemsCountAfterAdd).toEqual(1);
+            expect.soft(totalItemsCountAfterAdd).toEqual(1);
 
             await productsPage.removeProductFromCart(productName);
             await page.close();
@@ -61,9 +61,9 @@ test.describe('Product Page tests', () => {
             await headerOptions.shoppingCartLink.click();
             // Assert
             const cartPageUrl = page.url();
-            expect(cartPageUrl).toEqual(CART_URL);
+            expect.soft(cartPageUrl).toEqual(CART_URL);
             const actualCartProductName = await cartPage.getProductName(productName);
-            expect(productName).toEqual(actualCartProductName);
+            expect.soft(productName).toEqual(actualCartProductName);
             await page.close();
         });
 
@@ -80,10 +80,10 @@ test.describe('Product Page tests', () => {
             // Assert
 
             const cartPageUrl = page.url();
-            expect(cartPageUrl).toEqual(CART_URL);
+            expect.soft(cartPageUrl).toEqual(CART_URL);
 
             const productPriceAfterAddToCart = await cartPage.getProductPrice(productName);
-            expect(productPriceBeforeAddToCart).toEqual(productPriceAfterAddToCart);
+            expect.soft(productPriceBeforeAddToCart).toEqual(productPriceAfterAddToCart);
             await page.close();
         });
 
@@ -111,10 +111,10 @@ test.describe('Product Page tests', () => {
             await productsPage.addProductToCart(productName);
             // Act
             await headerOptions.goToCartPage();
-            expect(await cartPage.yourCartText.isVisible());
+            expect.soft(await cartPage.yourCartText.isVisible());
             await cartPage.goToProductsPageFromCart();
             // Assert
-            await expect(productsPage.productsHeading).toBeVisible();
+            await expect.soft(productsPage.productsHeading).toBeVisible();
             await page.close();
         });
 
@@ -128,15 +128,15 @@ test.describe('Product Page tests', () => {
             await headerOptions.goToCartPage();
             // Assert - check the actual product name on cart page
             const actualCartProductName = await cartPage.getProductName(prouctName);
-            expect(actualCartProductName).toBe(prouctName);
+            expect.soft(actualCartProductName).toBe(prouctName);
             // Arrange - remove the product from cart
             const count_beforeRemove = await cartPage.getNumberOfCartItems();
-            expect(count_beforeRemove).toBe(1);
+            expect.soft(count_beforeRemove).toBe(1);
 
             await cartPage.removeProductFromCart(prouctName);
 
             const count_afterRemove = await cartPage.getNumberOfCartItems();
-            expect(count_afterRemove).toBe(0);
+            expect.soft(count_afterRemove).toBe(0);
 
             await page.close()
         });

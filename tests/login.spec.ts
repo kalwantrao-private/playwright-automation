@@ -15,7 +15,7 @@ test.describe("Login page tests", () => {
         // Act
         await loginPage.login(standardUser.username, standardUser.password);
         // Assert
-        await expect(productsPage.productsHeading).toBeVisible();
+        await expect.soft(productsPage.productsHeading).toBeVisible();
     });
 
     test('Login with locked out user', { tag: [ "@LoginTest", "@Regression" ] }, async ({ loginPage }) => {
@@ -24,7 +24,7 @@ test.describe("Login page tests", () => {
         await loginPage.login(userData[1].username, userData[1].password);
         //Assert 
         const errorText = await loginPage.errorMessageText.textContent();
-        expect(errorText).toEqual("Epic sadface: Sorry, this user has been locked out.");
+        expect.soft(errorText).toEqual("Epic sadface: Sorry, this user has been locked out.");
     });
 
     test('Login with invalid data', { tag: [ "@LoginTest", "@Regression" ] }, async ({ loginPage }) => {
@@ -34,6 +34,6 @@ test.describe("Login page tests", () => {
         await loginPage.login(userData[2].username, userData[2].password);
         // Assert
         const errorText = await loginPage.errorMessageText.textContent();
-        expect(errorText).toEqual("Epic sadface: Username and password do not match any user in this service");
+        expect.soft(errorText).toEqual("Epic sadface: Username and password do not match any user in this service");
     });
 });

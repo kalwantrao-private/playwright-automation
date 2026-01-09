@@ -8,7 +8,7 @@ import { Overview } from "../pages/overview.page";
 import { CompletePage } from "../pages/checkoutComplete.page";
 import { ProductDetails } from "../pages/productDetail.page";
 
-type MyFixtures = {
+interface MyFixtures  {
     loginPage: LoginPage;
     headerOptions: Header;
     productsPage: Products;

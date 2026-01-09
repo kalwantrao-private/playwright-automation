@@ -17,13 +17,12 @@ test.describe("Overview Page", () => {
             await checkoutPage.clickContinueButton();
             // Assert
             // Check navigated to overview page
-            expect(await overviewPage.overviewText.isVisible());
+            expect.soft(await overviewPage.overviewText.isVisible());
             const actualProdName = await overviewPage.getProductName(productName);
             const priceOnOverviewPage = await overviewPage.getProductPrice(productName);
             // Check the product name on overview page is equal to product name added in cart
-            expect(priceOnProductPage).toBe(priceOnOverviewPage);
-            expect(actualProdName).toBe(productName);
-            console.log(await overviewPage.getProductPrice(productName));
+            expect.soft(priceOnProductPage).toBe(priceOnOverviewPage);
+            expect.soft(actualProdName).toBe(productName);
             await page.close();
         });
 
@@ -40,7 +39,7 @@ test.describe("Overview Page", () => {
             await checkoutPage.clickContinueButton();
             await overviewPage.submitOrder();
             // Assert
-            expect(await orderCompletePage.orderCompleteCheckMarkIsVisible()).toBeTruthy();
+            expect.soft(await orderCompletePage.orderCompleteCheckMarkIsVisible()).toBeTruthy();
             page.close();
         })
 
@@ -58,7 +57,7 @@ test.describe("Overview Page", () => {
             await checkoutPage.clickContinueButton();
             const actualErrorText = await checkoutPage.errorMessageText();
             // Assert
-            expect(errorText).toBe(actualErrorText);
+            expect.soft(errorText).toBe(actualErrorText);
             await page.close();
         });
 
@@ -78,7 +77,7 @@ test.describe("Overview Page", () => {
                 const finalTotal = await overviewPage.getFinalTotal();
                 const actualFinalPrice = finalTotal/100;
 
-                expect(itemTotal+actualTax).toBe(actualFinalPrice);
+                expect.soft(itemTotal+actualTax).toBe(actualFinalPrice);
 
                 await page.close();
         })

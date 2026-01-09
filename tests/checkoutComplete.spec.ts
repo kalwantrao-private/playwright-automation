@@ -16,12 +16,11 @@ test.describe("Order complete page tests", ()=> {
             const thankYouForYourOrder = await orderCompletePage.thankYouForYourOrderIsDisplayed();
             const backButton = await orderCompletePage.backHomeButtonIsDisplayed();
             const text = await orderCompletePage.getThankYouForYourOrderText();
-            console.log(text);
 
-            expect(orderCompleteText).toBeTruthy();
-            expect(orderCompleteCheckMark).toBeTruthy();
-            expect(thankYouForYourOrder).toBeTruthy();
-            expect(backButton).toBeTruthy();
+            expect.soft(orderCompleteText).toBeTruthy();
+            expect.soft(orderCompleteCheckMark).toBeTruthy();
+            expect.soft(thankYouForYourOrder).toBeTruthy();
+            expect.soft(backButton).toBeTruthy();
 
             await page.close();
     })
@@ -38,8 +37,8 @@ test.describe("Order complete page tests", ()=> {
             const orderComleteText = await orderCompletePage.getOrderCompleteText();
             const thankYouText = await orderCompletePage.getThankYouForYourOrderText();
 
-            expect(thankYouText).toEqual("Thank you for your order!");
-            expect(orderComleteText).toEqual("Your order has been dispatched, and will arrive just as fast as the pony can get there!");
+            expect.soft(thankYouText).toEqual("Thank you for your order!");
+            expect.soft(orderComleteText).toEqual("Your order has been dispatched, and will arrive just as fast as the pony can get there!");
 
             await page.close();
 
@@ -56,7 +55,7 @@ test.describe("Order complete page tests", ()=> {
                 await overviewPage.clickFinishButton();
                 await orderCompletePage.clickBackHomeButton();
                 const Url = page.url();   
-                expect(Url).toBe("https://www.saucedemo.com/inventory.html");       
+                expect.soft(Url).toBe("https://www.saucedemo.com/inventory.html");       
                 
                 await page.close();
         })

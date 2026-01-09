@@ -11,8 +11,8 @@ test.describe("Go to Product details from cart", () => {
             await cartPage.checkProductDetailsBeforeCheckout(productName);
             const actualName = await productDetailsPage.getProductName(productName);
             const actualPrice = await productDetailsPage.getProductPrice(productName);
-            expect(productName).toBe(actualName);
-            expect(productPrice).toBe(actualPrice);
+            expect.soft(productName).toBe(actualName);
+            expect.soft(productPrice).toBe(actualPrice);
             await page.close();
         });
 
@@ -22,12 +22,12 @@ test.describe("Go to Product details from cart", () => {
             await productsPage.addProductToCart(productName);
             await headerOptions.goToCartPage();
             const count_beforeRemovingProduct = await cartPage.getNumberOfCartItems();
-            expect(count_beforeRemovingProduct).toBe(1);
+            expect.soft(count_beforeRemovingProduct).toBe(1);
             await cartPage.checkProductDetailsBeforeCheckout(productName);
             await productDetailsPage.removeProductFromCart(productName);
             await headerOptions.goToCartPage();
             const count_afterRemovingProduct = await cartPage.getNumberOfCartItems();
-            expect(count_afterRemovingProduct).toBe(0);
+            expect.soft(count_afterRemovingProduct).toBe(0);
             page.close();
         });
 });
